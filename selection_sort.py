@@ -1,4 +1,4 @@
-#!usr/bin/en python
+#!usr/bin/env python
 
 """
 The selection sort algorithm sorts an array by repeatedly finding the minimum element (considering ascending order)
