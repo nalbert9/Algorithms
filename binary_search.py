@@ -20,9 +20,8 @@ def binary_search(list_elements, item):
             high = middle - 1
         else:
             low = middle + 1
-
-        # Running time O(log n)
     return None
+    # Running time O(log n)
 
 if __name__=='__main__':
     my_list = [1, 2, 3, 5, 7, 10, 40]
