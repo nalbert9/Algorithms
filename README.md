@@ -1,5 +1,5 @@
 # Algorithms in python
-
+ * Binary search 
  * Selection sort
  * Recursion
  * Quicksort
@@ -7,5 +7,5 @@
  * Breadth-first Search
  * Dijkstra's algorithms
  * Dynamic programming
- *K-nearest neighbors
+ * K-nearest neighbors
  
