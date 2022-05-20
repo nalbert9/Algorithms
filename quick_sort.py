@@ -6,12 +6,24 @@ To solve a problem using D&C, there are two steps:
     2. Divide or decrease your problem until it becomes the base case.
 """
 def quick_sort(elements):
-    if len(elements) < 2:
+
+    n = len(elements)
+    if n < 2:
         return elements        # Arrays with 0 or 1 element are already sorted
     else:
-        pivot = elements[0]    # Recursive case
-        less = [i for i in elements[1:] if i <= pivot] # Sub-array of all the elements less than the pivot
-        greater = [ i for i in elements[1:] if i > pivot] # Sub-array of all the elements greater than the pivot 
+        pivot = elements[0]
+        less = []
+        greater = []
+
+        for i in range(1, n):
+            if pivot <= elements[i]:
+                greater.append(elements[i])
+            if pivot > elements[i]:
+                less.append(elements[i])
+
+        # The Pythonic way :) 
+        # less = [i for i in elements[1:] if i <= pivot] # Sub-array of all the elements less than the pivot
+        # greater = [ i for i in elements[1:] if i > pivot] # Sub-array of all the elements greater than the pivot 
 
         return quick_sort(less) + [pivot] + quick_sort(greater)
         # Running time O(log n)
