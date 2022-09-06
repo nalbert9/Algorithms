@@ -5,7 +5,7 @@ item is in the array, the function returns its position.
 """
 def binary_search(list_elements, item):
     low = 0
-    high = len(list_elements)
+    high = len(list_elements) - 1
 
     while (low <= high):
         # Each time, you check the middle element
