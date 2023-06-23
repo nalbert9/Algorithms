@@ -1,0 +1,99 @@
+dataset of insurance policy data for our actuarial use cases. This data will contain attributes such as policyholder age, gender, number of claims, total claim amount, and policy premium. We will generate these data using the numpy and pandas libraries, then save them to a CSV file for use in each of our visualizations.
+
+Here's how you can generate the dataset:
+
+python
+Copy code
+import numpy as np
+import pandas as pd
+
+# Number of policyholders
+N = 1000
+
+# Age is normally distributed around 45 with a standard deviation of 10
+age = np.random.normal(45, 10, N).astype(int)
+
+# Gender is randomly assigned
+gender = np.random.choice(['Male', 'Female'], N)
+
+# Number of claims follows a Poisson distribution with lambda=3
+claims = np.random.poisson(3, N)
+
+# Total claim amount is normally distributed around 5000 with a standard deviation of 2000
+total_claim_amount = np.random.normal(5000, 2000, N)
+
+# Policy premium is normally distributed around 1000 with a standard deviation of 200
+premium = np.random.normal(1000, 200, N)
+
+# Construct the DataFrame
+df = pd.DataFrame({'Age': age, 'Gender': gender, 'Claims': claims, 'TotalClaimAmount': total_claim_amount, 'Premium': premium})
+
+# Save to CSV
+df.to_csv('insurance_data.csv', index=False)
+Matplotlib Use Case - Histogram of Age:
+python
+Copy code
+import matplotlib.pyplot as plt
+import pandas as pd
+
+df = pd.read_csv('insurance_data.csv')
+
+plt.hist(df['Age'], bins=20, alpha=0.5, color='g')
+plt.xlabel('Age')
+plt.ylabel('Count')
+plt.title('Histogram of Policyholder Ages')
+plt.grid(True)
+plt.show()
+Seaborn Use Case - Box Plot of Claims by Gender:
+python
+Copy code
+import seaborn as sns
+import pandas as pd
+
+df = pd.read_csv('insurance_data.csv')
+
+sns.boxplot(x='Gender', y='Claims', data=df)
+plt.title('Box Plot of Claims by Gender')
+plt.show()
+Streamlit Use Case - Interactive Scatter Plot of Total Claim Amount vs Premium:
+First, you need to install streamlit if you haven't, pip install streamlit. After that you can use this code to run your Streamlit application. You can save this code in a python file and then run the file using the command streamlit run your_file.py.
+
+python
+Copy code
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+
+df = pd.read_csv('insurance_data.csv')
+
+fig = px.scatter(df, x='TotalClaimAmount', y='Premium')
+
+st.title('Scatter Plot of Total Claim Amount vs Premium')
+st.plotly_chart(fig)
+Dash Use Case - Interactive Histogram of Premium:
+First, you need to install dash if you haven't, pip install dash. After that you can use this code to run your Dash application. You can save this code in a python file and then run the file using the command python your_file.py.
+
+python
+Copy code
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import pandas as pd
+import plotly.graph_objs as go
+
+df = pd.read_csv('insurance_data.csv')
+
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+    dcc.Graph(
+        id='premium-histogram',
+        figure={
+            'data': [go.Histogram(x=df['Premium'])],
+            'layout': go.Layout(title='Histogram of Premiums')
+        }
+    )
+])
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
