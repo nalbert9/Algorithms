@@ -1,4 +1,6 @@
 import requests
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.ssl_ import create_urllib3_context
 
 # Set your SharePoint URL
 sharepoint_url = "https://your-sharepoint-url.com"
@@ -22,9 +24,17 @@ proxy_settings = {
 # Load the PFX certificate
 cert = (certificate_path, certificate_password)
 
+# Create a custom SSL context with the certificate
+ssl_context = create_urllib3_context()
+ssl_context.load_cert_chain(certfile=cert[0], password=cert[1])
+
+# Create a session with the custom SSL context
+session = requests.Session()
+session.mount('https://', HTTPAdapter(max_retries=3))
+
 # Make the request through the proxy to access SharePoint
 try:
-    response = requests.get(file_url, proxies=proxy_settings, cert=cert, verify=False)
+    response = session.get(file_url, proxies=proxy_settings, cert=cert)
 
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
@@ -34,3 +44,5 @@ try:
 
 except requests.RequestException as e:
     print(f"Request error: {e}")
+finally:
+    session.close()
