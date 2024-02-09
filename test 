@@ -34,7 +34,10 @@ session.mount('https://', HTTPAdapter(max_retries=3))
 
 # Make the request through the proxy to access SharePoint
 try:
-    response = session.get(file_url, proxies=proxy_settings, cert=cert)
+    response = session.get(file_url, proxies=proxy_settings, cert=cert, verify=True)
+
+    # Print SSL information
+    print(f"SSL Certificate Information:\n{response.connection.cert}")
 
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
@@ -44,5 +47,7 @@ try:
 
 except requests.RequestException as e:
     print(f"Request error: {e}")
+except Exception as ex:
+    print(f"An unexpected error occurred: {ex}")
 finally:
     session.close()
