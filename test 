@@ -9,6 +9,10 @@ proxy_url = "https://your-proxy-url.com"
 # Set the SharePoint file URL
 file_url = f"{sharepoint_url}/path/to/your/file.txt"
 
+# Set the path to your PFX certificate file and its password
+certificate_path = "path/to/your/certificate.pfx"
+certificate_password = "your-certificate-password"
+
 # Set your SharePoint credentials if required
 sharepoint_username = "your-sharepoint-username"
 sharepoint_password = "your-sharepoint-password"
@@ -19,19 +23,16 @@ proxy_settings = {
     'https': proxy_url,
 }
 
-# Define SharePoint authentication
-sharepoint_auth = (sharepoint_username, sharepoint_password)
+# Load the PFX certificate
+cert = (certificate_path, certificate_password)
 
 # Make the request through the proxy to access SharePoint
 try:
-    response = requests.get(file_url, proxies=proxy_settings, auth=sharepoint_auth)
+    response = requests.get(file_url, proxies=proxy_settings, auth=(sharepoint_username, sharepoint_password), cert=cert, verify=False)
 
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Save the content to a local file
-        with open("local_file.txt", "wb") as local_file:
-            local_file.write(response.content)
-        print("File successfully downloaded.")
+        print("Connection to SharePoint successful.")
     else:
         print(f"Error accessing SharePoint. Status code: {response.status_code}")
 
