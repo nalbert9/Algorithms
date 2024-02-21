@@ -47,3 +47,11 @@ with open(file_path, "rb") as file_data:
     response = requests.put(upload_url, headers=headers, data=file_data)
 
 print(response.json())
+
+
+openssl pkcs12 -in yourfile.pfx -clcerts -nokeys -out certificate.crt
+
+openssl pkcs12 -in yourfile.pfx -nocerts -out privatekey.pem
+
+
+openssl rsa -in privatekey.pem -out privatekey_unencrypted.pem
