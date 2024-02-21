@@ -1,0 +1,5 @@
+ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+PROXY_URL="http://yourproxy:port"
+SITE_ID="YOUR_SITE_ID"
+
+curl -x $PROXY_URL -H "Authorization: Bearer $ACCESS_TOKEN" -H "Content-Type: application/json" "https://graph.microsoft.com/v1.0/sites/$SITE_ID"
