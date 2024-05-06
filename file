@@ -1,0 +1,29 @@
+import requests
+
+def get_sharepoint_data(access_token, site_id, list_id):
+    """
+    Retrieves data from a specified SharePoint list.
+    
+    :param access_token: str, Access token for the Microsoft Graph API
+    :param site_id: str, The ID of the SharePoint site
+    :param list_id: str, The ID of the list to retrieve data from
+    :return: dict, Parsed JSON response from the Microsoft Graph API
+    """
+    headers = {
+        'Authorization': 'Bearer ' + access_token,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+    endpoint = f'https://graph.microsoft.com/v1.0/sites/{site_id}/lists/{list_id}/items'
+    response = requests.get(endpoint, headers=headers)
+    return response.json()
+
+def main():
+    access_token = get_access_token()  # Assume get_access_token() is your method to obtain the access token
+    site_id = 'your_site_id_here'  # Replace with your actual SharePoint site ID
+    list_id = 'your_list_id_here'  # Replace with your actual SharePoint list ID
+    data = get_sharepoint_data(access_token, site_id, list_id)
+    print(data)
+
+if __name__ == "__main__":
+    main()
