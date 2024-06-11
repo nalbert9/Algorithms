@@ -1,1 +1,48 @@
--
+import msal
+import requests
+
+# Configurations
+client_id = 'YOUR_CLIENT_ID'
+client_secret = 'YOUR_CLIENT_SECRET'
+tenant_id = 'YOUR_TENANT_ID'
+authority = f'https://login.microsoftonline.com/{tenant_id}'
+scope = ['https://graph.microsoft.com/.default']
+
+# Create a confidential client application
+app = msal.ConfidentialClientApplication(
+    client_id,
+    authority=authority,
+    client_credential=client_secret
+)
+
+# Acquire a token
+result = app.acquire_token_for_client(scopes=scope)
+
+if "access_token" in result:
+    token = result['access_token']
+    print("Access token acquired")
+
+    # Replace with your specific folder ID or use 'root' to list the root folder
+    folder_id = 'root'  # or specific folder ID
+
+    # Microsoft Graph API endpoint for listing children
+    endpoint = f'https://graph.microsoft.com/v1.0/me/drive/items/{folder_id}/children'
+
+    # HTTP headers
+    headers = {
+        'Authorization': f'Bearer {token}'
+    }
+
+    # Make the request
+    response = requests.get(endpoint, headers=headers)
+
+    if response.status_code == 200:
+        children = response.json()
+        for item in children['value']:
+            print(f"Name: {item['name']}, ID: {item['id']}")
+    else:
+        print(f"Failed to retrieve children: {response.status_code}")
+        print(response.json())
+else:
+    print("Failed to acquire token")
+    print(result)
